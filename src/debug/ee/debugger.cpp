@@ -1007,7 +1007,7 @@ Debugger::~Debugger()
     _ASSERTE(!"Debugger dtor should not be called.");
 }
 
-#if defined(FEATURE_HIJACK) && !defined(PLATFORM_UNIX)
+#if defined(FEATURE_HIJACK) && defined(PLATFORM_WINDOWS)
 typedef void (*PFN_HIJACK_FUNCTION) (void);
 
 // Given the start address and the end address of a function, return a MemoryRange for the function.
@@ -1033,16 +1033,16 @@ MemoryRange Debugger::s_hijackFunction[kMaxHijackFunctions] =
                                RedirectedHandledJITCaseForGCStress_StubEnd)
 #endif // HAVE_GCCOVER && _TARGET_AMD64_
     };
-#endif // FEATURE_HIJACK && !PLATFORM_UNIX
+#endif // FEATURE_HIJACK && PLATFORM_WINDOWS
 
 // Save the necessary information for the debugger to recognize an IP in one of the thread redirection
 // functions.
 void Debugger::InitializeHijackFunctionAddress()
 {
-#if defined(FEATURE_HIJACK) && !defined(PLATFORM_UNIX)
+#if defined(FEATURE_HIJACK) && defined(PLATFORM_WINDOWS)
     // Advertise hijack address for the DD Hijack primitive
     m_rgHijackFunction = Debugger::s_hijackFunction;
-#endif // FEATURE_HIJACK && !PLATFORM_UNIX
+#endif // FEATURE_HIJACK && PLATFORM_WINDOWS
 }
 
 // For debug-only builds, we'll have a debugging feature to count

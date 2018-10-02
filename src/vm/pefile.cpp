@@ -2359,7 +2359,7 @@ void PEAssembly::PathToUrl(SString &string)
 
     SString::Iterator i = string.Begin();
 
-#if !defined(PLATFORM_UNIX)
+#if defined(PLATFORM_WINDOWS)
     if (i[0] == W('\\'))
     {
         // Network path
@@ -2398,7 +2398,7 @@ void PEAssembly::UrlToPath(SString &string)
     SString::Iterator i = string.Begin();
 
     SString sss2(SString::Literal, W("file://"));
-#if !defined(PLATFORM_UNIX)
+#if defined(PLATFORM_WINDOWS)
     SString sss3(SString::Literal, W("file:///"));
     if (string.MatchCaseInsensitive(i, sss3))
         string.Delete(i, 8);

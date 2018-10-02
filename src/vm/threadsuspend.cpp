@@ -1889,12 +1889,12 @@ LRetry:
         {
             fNeedStackCrawl = TRUE;
         }
-#if defined(FEATURE_HIJACK) && !defined(PLATFORM_UNIX)
+#if defined(FEATURE_HIJACK) && defined(PLATFORM_WINDOWS)
         else
         {
             HandleJITCaseForAbort();
         }
-#endif // FEATURE_HIJACK && !PLATFORM_UNIX
+#endif // FEATURE_HIJACK && PLATFORM_WINDOWS
 
 #ifndef DISABLE_THREADSUSPEND
         // The thread is not suspended now.
@@ -3428,7 +3428,7 @@ void RedirectedThreadFrame::ExceptionUnwind()
     m_Regs = NULL;
 }
 
-#ifndef PLATFORM_UNIX
+#ifdef PLATFORM_WINDOWS
 
 #ifdef _TARGET_X86_
 //****************************************************************************************
@@ -4374,7 +4374,7 @@ HRESULT ThreadSuspend::SuspendRuntime(ThreadSuspend::SUSPEND_REASON reason)
 
 #else // DISABLE_THREADSUSPEND
 
-#if defined(FEATURE_HIJACK) && !defined(PLATFORM_UNIX)
+#if defined(FEATURE_HIJACK) && defined(PLATFORM_WINDOWS)
             DWORD dwSwitchCount = 0;
     RetrySuspension:
 #endif
@@ -4416,7 +4416,7 @@ HRESULT ThreadSuspend::SuspendRuntime(ThreadSuspend::SUSPEND_REASON reason)
                 // is where we try to hijack/redirect the thread.  If it's in VM code, we have to just let the VM
                 // finish what it's doing.
 
-#if defined(FEATURE_HIJACK) && !defined(PLATFORM_UNIX)
+#if defined(FEATURE_HIJACK) && defined(PLATFORM_WINDOWS)
                 // Only check for HandledJITCase if we actually suspended the thread.
                 if (str == Thread::STR_Success)
                 {
@@ -4453,7 +4453,7 @@ HRESULT ThreadSuspend::SuspendRuntime(ThreadSuspend::SUSPEND_REASON reason)
                         STRESS_LOG1(LF_SYNC, LL_INFO1000, "Thread::SuspendRuntime() -   Thread %p redirected().\n", thread);
                     }
                 }
-#endif // FEATURE_HIJACK && !PLATFORM_UNIX
+#endif // FEATURE_HIJACK && PLATFORM_WINDOWS
 
                 FastInterlockOr((ULONG *) &thread->m_State, Thread::TS_GCSuspendPending);
 
@@ -4720,7 +4720,7 @@ HRESULT ThreadSuspend::SuspendRuntime(ThreadSuspend::SUSPEND_REASON reason)
                 if (!thread->m_fPreemptiveGCDisabled)
                     continue;
 
-#if defined(FEATURE_HIJACK) && !defined(PLATFORM_UNIX)
+#if defined(FEATURE_HIJACK) && defined(PLATFORM_WINDOWS)
             RetrySuspension2:
 #endif
                 // We can not allocate memory after we suspend a thread.
@@ -4744,7 +4744,7 @@ HRESULT ThreadSuspend::SuspendRuntime(ThreadSuspend::SUSPEND_REASON reason)
                     g_SuspendStatistics.cntFailedSuspends++;
 #endif
 
-#if defined(FEATURE_HIJACK) && !defined(PLATFORM_UNIX)
+#if defined(FEATURE_HIJACK) && defined(PLATFORM_WINDOWS)
                 // Only check HandledJITCase if we actually suspended the thread, and
                 // the thread is in cooperative mode.
                 // See comment at the previous invocation of HandledJITCase - it does
@@ -4771,7 +4771,7 @@ HRESULT ThreadSuspend::SuspendRuntime(ThreadSuspend::SUSPEND_REASON reason)
 #endif
                     }
                 }
-#endif // FEATURE_HIJACK && !PLATFORM_UNIX
+#endif // FEATURE_HIJACK && PLATFORM_WINDOWS
 
                 if (str == Thread::STR_Success)
                     thread->ResumeThread();
@@ -5107,7 +5107,7 @@ ThrowControlForThread(
     RaiseComPlusException();
 }
 
-#if defined(FEATURE_HIJACK) && !defined(PLATFORM_UNIX)
+#if defined(FEATURE_HIJACK) && defined(PLATFORM_WINDOWS)
 // This function is called by UserAbort and StopEEAndUnwindThreads.
 // It forces a thread to abort if allowed and the thread is running managed code.
 BOOL Thread::HandleJITCaseForAbort()
@@ -5243,7 +5243,7 @@ BOOL Thread::ResumeUnderControl(CONTEXT *pCtx)
     return fSuccess;
 }
 
-#endif // FEATURE_HIJACK && !PLATFORM_UNIX
+#endif // FEATURE_HIJACK && PLATFORM_WINDOWS
 
 
 PCONTEXT Thread::GetAbortContext ()
@@ -5336,10 +5336,10 @@ bool Thread::SysStartSuspendForDebug(AppDomain *pAppDomain)
         // switch back and forth during a debug suspension -- until we
         // can get their Pending bit set.
 
-#if defined(FEATURE_HIJACK) && !defined(PLATFORM_UNIX)
+#if defined(FEATURE_HIJACK) && defined(PLATFORM_WINDOWS)
         DWORD dwSwitchCount = 0;
     RetrySuspension:
-#endif // FEATURE_HIJACK && !PLATFORM_UNIX
+#endif // FEATURE_HIJACK && PLATFORM_WINDOWS
 
         // We can not allocate memory after we suspend a thread.
         // Otherwise, we may deadlock the process when CLR is hosted.
@@ -5364,7 +5364,7 @@ bool Thread::SysStartSuspendForDebug(AppDomain *pAppDomain)
         if (thread->m_fPreemptiveGCDisabled && str == STR_Success)
         {
 
-#if defined(FEATURE_HIJACK) && !defined(PLATFORM_UNIX)
+#if defined(FEATURE_HIJACK) && defined(PLATFORM_WINDOWS)
             WorkingOnThreadContextHolder workingOnThreadContext(thread);
             if (workingOnThreadContext.Acquired() && thread->HandledJITCase())
             {
@@ -5380,7 +5380,7 @@ bool Thread::SysStartSuspendForDebug(AppDomain *pAppDomain)
                     goto RetrySuspension;
                 }
             }
-#endif // FEATURE_HIJACK && !PLATFORM_UNIX
+#endif // FEATURE_HIJACK && PLATFORM_WINDOWS
 
             // Remember that this thread will be running to a safe point
             FastInterlockIncrement(&m_DebugWillSyncCount);
@@ -5521,7 +5521,7 @@ bool Thread::SysSweepThreadsForDebug(bool forceSync)
 #else // DISABLE_THREADSUSPEND
         // Suspend the thread
 
-#if defined(FEATURE_HIJACK) && !defined(PLATFORM_UNIX)
+#if defined(FEATURE_HIJACK) && defined(PLATFORM_WINDOWS)
         DWORD dwSwitchCount = 0;
 #endif
 
@@ -5569,7 +5569,7 @@ RetrySuspension:
 
             goto Label_MarkThreadAsSynced;
         }
-#if defined(FEATURE_HIJACK) && !defined(PLATFORM_UNIX)
+#if defined(FEATURE_HIJACK) && defined(PLATFORM_WINDOWS)
         // If the thread is in jitted code, HandledJitCase will try to hijack it; and the hijack
         // will toggle the GC.
         else
@@ -5597,7 +5597,7 @@ RetrySuspension:
                 goto Label_MarkThreadAsSynced;
             }
         }
-#endif // FEATURE_HIJACK && !PLATFORM_UNIX
+#endif // FEATURE_HIJACK && PLATFORM_WINDOWS
 
         // If we didn't take the thread out of the set, then resume it and give it another chance to reach a safe
         // point.
@@ -6285,7 +6285,7 @@ VOID * GetHijackAddr(Thread *pThread, EECodeInfo *codeInfo)
     return reinterpret_cast<VOID *>(OnHijackTripThread);
 }
 
-#ifndef PLATFORM_UNIX
+#ifdef PLATFORM_WINDOWS
 
 // Get the ExecutionState for the specified SwitchIn thread.  Note that this is
 // a 'StackWalk' call back (PSTACKWALKFRAMESCALLBACK).

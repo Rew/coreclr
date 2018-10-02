@@ -1498,10 +1498,10 @@ Thread::Thread()
     m_ppvHJRetAddrPtr = (VOID**) 0xCCCCCCCCCCCCCCCC;
     m_pvHJRetAddr = (VOID*) 0xCCCCCCCCCCCCCCCC;
 
-#ifndef PLATFORM_UNIX
+#ifdef PLATFORM_WINDOWS
     X86_ONLY(m_LastRedirectIP = 0);
     X86_ONLY(m_SpinCount = 0);
-#endif // PLATFORM_UNIX
+#endif // PLATFORM_WINDOWS
 #endif // FEATURE_HIJACK
 
 #if defined(_DEBUG) && defined(TRACK_SYNC)
@@ -1577,7 +1577,7 @@ Thread::Thread()
 
     m_dwAVInRuntimeImplOkayCount = 0;
 
-#if defined(HAVE_GCCOVER) && defined(USE_REDIRECT_FOR_GCSTRESS) && !defined(PLATFORM_UNIX) // GCCOVER
+#if defined(HAVE_GCCOVER) && defined(USE_REDIRECT_FOR_GCSTRESS) && defined(PLATFORM_WINDOWS) // GCCOVER
     m_fPreemptiveGCDisabledForGCStress = false;
 #endif
 

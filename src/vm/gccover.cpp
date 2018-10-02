@@ -1323,7 +1323,7 @@ BOOL OnGcCoverageInterrupt(PCONTEXT regs)
     Thread* pThread = GetThread();
     _ASSERTE(pThread);
 
-#if defined(USE_REDIRECT_FOR_GCSTRESS) && !defined(PLATFORM_UNIX)
+#if defined(USE_REDIRECT_FOR_GCSTRESS) && defined(PLATFORM_WINDOWS)
     // If we're unable to redirect, then we simply won't test GC at this
     // location.
     if (!pThread->CheckForAndDoRedirectForGCStress(regs))

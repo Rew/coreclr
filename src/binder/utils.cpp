@@ -172,7 +172,7 @@ namespace BINDER_SPACE
             }
 
             i = urlOrPath.Begin();
-#if !defined(PLATFORM_UNIX)
+#if defined(PLATFORM_WINDOWS)
             if (i[0] == W('/'))
             {
                 // Disk path file:///
@@ -206,7 +206,7 @@ namespace BINDER_SPACE
 
         BINDER_LOG_STRING(W("Path"), pathOrUrl);
 
-#if !defined(PLATFORM_UNIX)
+#if defined(PLATFORM_WINDOWS)
         // Network path \\server --> file://server
         // Disk path    c:\dir   --> file:///c:/dir
         if (i[0] == W('\\'))

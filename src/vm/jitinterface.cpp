@@ -10676,7 +10676,7 @@ DWORD CEEInfo::getJitFlags(CORJIT_FLAGS* jitFlags, DWORD sizeInBytes)
 }
 
 /*********************************************************************/
-#if !defined(PLATFORM_UNIX)
+#if defined(PLATFORM_WINDOWS)
 
 struct RunWithErrorTrapFilterParam
 {
@@ -10695,7 +10695,7 @@ static LONG RunWithErrorTrapFilter(struct _EXCEPTION_POINTERS* exceptionPointers
     return param->m_corInfo->FilterException(exceptionPointers);
 }
 
-#endif // !defined(PLATFORM_UNIX)
+#endif // defined(PLATFORM_WINDOWS)
 
 bool CEEInfo::runWithErrorTrap(void (*function)(void*), void* param)
 {
@@ -10712,7 +10712,7 @@ bool CEEInfo::runWithErrorTrap(void (*function)(void*), void* param)
 
     bool success = true;
 
-#if !defined(PLATFORM_UNIX)
+#if defined(PLATFORM_WINDOWS)
 
     RunWithErrorTrapFilterParam trapParam;
     trapParam.m_corInfo = m_pOverride == nullptr ? this : m_pOverride;
@@ -10730,7 +10730,7 @@ bool CEEInfo::runWithErrorTrap(void (*function)(void*), void* param)
     }
     PAL_ENDTRY
 
-#else // !defined(PLATFORM_UNIX)
+#else // defined(PLATFORM_WINDOWS)
 
     // We shouldn't need PAL_TRY on *nix: any exceptions that we are able to catch
     // ought to originate from the runtime itself and should be catchable inside of

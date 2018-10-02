@@ -1048,12 +1048,12 @@ PTR_PEImageLayout PEImage::GetLayoutInternal(DWORD imageLayoutMask,DWORD flags)
         BOOL bIsMappedLayoutSuitable = ((imageLayoutMask & PEImageLayout::LAYOUT_MAPPED) != 0);
         BOOL bIsFlatLayoutSuitable = ((imageLayoutMask & PEImageLayout::LAYOUT_FLAT) != 0);
 
-#if !defined(PLATFORM_UNIX)
+#if defined(PLATFORM_WINDOWS)
         if (bIsMappedLayoutSuitable)
         {
             bIsFlatLayoutSuitable = FALSE;
         }
-#endif // !PLATFORM_UNIX
+#endif // PLATFORM_WINDOWS
 
         _ASSERTE(bIsMappedLayoutSuitable || bIsFlatLayoutSuitable);
 
