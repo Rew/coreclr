@@ -432,7 +432,7 @@ int _cdecl wmain(int argc, __in_ecount(argc) WCHAR **argv)
 
     HRESULT hr;
 
-#ifndef PLATFORM_UNIX
+#ifdef PLATFORM_WINDOWS
     // This is required to properly display Unicode characters
     _setmode(_fileno(stdout), _O_U8TEXT);
 #endif
