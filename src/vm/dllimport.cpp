@@ -6008,7 +6008,7 @@ HMODULE NDirect::LoadLibraryModuleViaHost(NDirectMethodDesc * pMD, AppDomain* pD
     //Dynamic Pinvoke Support:
     //Check if we  need to provide the host a chance to provide the unmanaged dll 
 
-#ifndef PLATFORM_UNIX
+#ifdef PLATFORM_WINDOWS
     // Prevent Overriding of Windows API sets.
     // This is replicating quick check from the OS implementation of api sets.
     if (SString::_wcsnicmp(wszLibName, W("api-"), 4) == 0 || SString::_wcsnicmp(wszLibName, W("ext-"), 4) == 0)
@@ -6288,7 +6288,7 @@ HINSTANCE NDirect::LoadLibraryModule(NDirectMethodDesc * pMD, LoadLibErrorTracke
         hmod = GetCLRModule();
 #endif // FEATURE_PAL
 
-#if defined(FEATURE_CORESYSTEM) && !defined(PLATFORM_UNIX)
+#if defined(FEATURE_CORESYSTEM) && defined(PLATFORM_WINDOWS)
     if (hmod == NULL)
     {
         // Try to go straight to System32 for Windows API sets. This is replicating quick check from

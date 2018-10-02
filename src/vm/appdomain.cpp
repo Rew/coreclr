@@ -8776,7 +8776,7 @@ BOOL AppDomain::StopEEAndUnwindThreads(unsigned int retryCount, BOOL *pFMarkUnlo
 
                 if (pThread->PreemptiveGCDisabledOther())
                 {
-        #if defined(FEATURE_HIJACK) && !defined(PLATFORM_UNIX)
+        #if defined(FEATURE_HIJACK) && defined(PLATFORM_WINDOWS)
                     Thread::SuspendThreadResult str = pThread->SuspendThread();
                     if (str == Thread::STR_Success)
                     {

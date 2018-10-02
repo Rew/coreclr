@@ -1378,7 +1378,7 @@ void Zapper::DefineOutputAssembly(SString& strAssemblyName, ULONG * pHashAlgId)
         ThrowHR(HRESULT_FROM_WIN32(ERROR_INVALID_NAME));
     }
 
-#ifndef PLATFORM_UNIX
+#ifdef PLATFORM_WINDOWS
     //
     // We always need a hash since our assembly module is separate from the manifest.
     // Use MD5 by default.

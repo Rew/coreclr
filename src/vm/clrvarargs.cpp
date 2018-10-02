@@ -32,7 +32,7 @@ void VARARGS::MarshalToManagedVaList(va_list va, VARARGS *dataout)
 {
     WRAPPER_NO_CONTRACT
 
-#ifndef PLATFORM_UNIX
+#ifdef PLATFORM_WINDOWS
     _ASSERTE(dataout != NULL);
     dataout->SigPtr = SigPointer(NULL, 0);
     dataout->ArgCookie = NULL;
@@ -49,7 +49,7 @@ void
 VARARGS::MarshalToUnmanagedVaList(
     va_list va, DWORD cbVaListSize, const VARARGS * data)
 {
-#ifndef PLATFORM_UNIX
+#ifdef PLATFORM_WINDOWS
     BYTE * pdstbuffer = (BYTE *)va;
 
     int    remainingArgs = data->RemainingArgs;
