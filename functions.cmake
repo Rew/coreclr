@@ -99,8 +99,8 @@ function(generate_exports_file)
 
   add_custom_command(
     OUTPUT ${outputFilename}
-    COMMAND ${AWK} -f ${CMAKE_SOURCE_DIR}/${AWK_SCRIPT} ${INPUT_LIST} >${outputFilename}
-    DEPENDS ${INPUT_LIST} ${CMAKE_SOURCE_DIR}/${AWK_SCRIPT}
+    COMMAND ${AWK} -f ${CLR_DIR}/${AWK_SCRIPT} ${INPUT_LIST} >${outputFilename}
+    DEPENDS ${INPUT_LIST} ${CLR_DIR}/${AWK_SCRIPT}
     COMMENT "Generating exports file ${outputFilename}"
   )
   set_source_files_properties(${outputFilename}
@@ -120,8 +120,8 @@ function(generate_exports_file_prefix inputFilename outputFilename prefix)
 
   add_custom_command(
     OUTPUT ${outputFilename}
-    COMMAND ${AWK} -f ${CMAKE_SOURCE_DIR}/${AWK_SCRIPT} ${AWK_VARS} ${inputFilename} >${outputFilename}
-    DEPENDS ${inputFilename} ${CMAKE_SOURCE_DIR}/${AWK_SCRIPT}
+    COMMAND ${AWK} -f ${CLR_DIR}/${AWK_SCRIPT} ${AWK_VARS} ${inputFilename} >${outputFilename}
+    DEPENDS ${inputFilename} ${CLR_DIR}/${AWK_SCRIPT}
     COMMENT "Generating exports file ${outputFilename}"
   )
   set_source_files_properties(${outputFilename}
@@ -284,7 +284,7 @@ function(verify_dependencies targetName errorMessage)
             TARGET ${targetName}
             POST_BUILD
             VERBATIM
-            COMMAND ${CMAKE_SOURCE_DIR}/verify-so.sh
+            COMMAND ${CLR_DIR}/verify-so.sh
                 $<TARGET_FILE:${targetName}>
                 ${errorMessage}
             COMMENT "Verifying ${targetName} dependencies"

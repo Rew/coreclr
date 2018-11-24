@@ -208,9 +208,9 @@
 #define _TARGET_UNIX_
 #endif
 
-#ifndef _TARGET_UNIX_
+#ifdef PLATFORM_WINDOWS
 #define _TARGET_WINDOWS_
-#endif // !_TARGET_UNIX_
+#endif // PLATFORM_WINDOWS
 
 // --------------------------------------------------------------------------------
 // IMAGE_FILE_MACHINE_TARGET

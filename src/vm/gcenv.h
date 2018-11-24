@@ -44,10 +44,12 @@
 #include "gcenv.interlocked.h"
 #include "gcenv.interlocked.inl"
 
-#ifdef PLATFORM_UNIX
+#ifdef PLATFORM_WINDOWS
+#include "gcenv.windows.inl"
+#elif PLATFORM_UNIX
 #include "gcenv.unix.inl"
 #else
-#include "gcenv.windows.inl"
+#error "gcenv not defined for platform"
 #endif
 
 namespace ETW

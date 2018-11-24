@@ -2,8 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-#ifdef _WIN32
+#ifdef PLATFORM_WINDOWS
 #include "gcenv.windows.inl"
-#else
+#elif PLATFORM_UNIX
 #include "gcenv.unix.inl"
-#endif // _WIN32
+#else
+#error "gcenv not defined for platform"
+#endif

@@ -399,7 +399,7 @@ inline UINT AlignmentTrim(UINT value, UINT alignment)
     return value&(alignment-1);
 }
 
-#ifndef PLATFORM_UNIX
+#ifdef PLATFORM_WINDOWS
 // For Unix this and the previous function get the same types.
 // So, exclude this one.
 inline UINT AlignmentTrim(ULONG value, UINT alignment)
@@ -409,7 +409,7 @@ inline UINT AlignmentTrim(ULONG value, UINT alignment)
     STATIC_CONTRACT_SUPPORTS_DAC;
     return value&(alignment-1);
 }
-#endif // PLATFORM_UNIX
+#endif // PLATFORM_WINDOWS
 
 inline UINT AlignmentTrim(UINT64 value, UINT alignment)
 {

@@ -36,7 +36,7 @@ if(CLR_CMAKE_PLATFORM_UNIX)
     unix/gcenv.unix.cpp
     unix/events.cpp
     unix/cgroup.cpp)
-else()
+elseif(CLR_CMAKE_PLATFORM_WINDOWS)
   set ( GC_SOURCES
     ${GC_SOURCES}
     windows/gcenv.windows.cpp)
