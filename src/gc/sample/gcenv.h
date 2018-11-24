@@ -33,10 +33,12 @@
 #include "gcenv.ee.h"
 #include "volatile.h"
 
-#ifdef PLATFORM_UNIX
+#ifdef PLATFORM_WINDOWS
+#include "gcenv.windows.inl"
+#elif PLATFORM_UNIX
 #include "gcenv.unix.inl"
 #else
-#include "gcenv.windows.inl"
+#error "gcenv not defined for platform"
 #endif
 
 #define MAX_LONGPATH 1024

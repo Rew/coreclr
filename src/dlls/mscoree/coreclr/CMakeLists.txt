@@ -100,7 +100,7 @@ set(CORECLR_LIBRARIES
     v3binder
 )
 
-if(WIN32)
+if(CLR_CMAKE_PLATFORM_WINDOWS)
     list(APPEND CORECLR_LIBRARIES
         ${STATIC_MT_CRT_LIB}
         ${STATIC_MT_VCRT_LIB}
@@ -117,7 +117,7 @@ if(WIN32)
         bcrypt.lib
         RuntimeObject.lib
     )
-else()
+elseif(CLR_CMAKE_PLATFORM_UNIX)
     list(APPEND CORECLR_LIBRARIES
         ${START_WHOLE_ARCHIVE} # force all PAL objects to be included so all exports are available
         coreclrpal
@@ -126,7 +126,7 @@ else()
         mscorrc_debug
         palrt
     )
-endif(WIN32)
+endif()
 
 if(FEATURE_PERFTRACING)
     list(APPEND CORECLR_LIBRARIES

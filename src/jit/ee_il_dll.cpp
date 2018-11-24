@@ -20,7 +20,7 @@ XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 #include "emit.h"
 #include "corexcep.h"
 
-#if !defined(_HOST_UNIX_)
+#if defined(_HOST_WINDOWS_)
 #include <io.h>    // For _dup, _setmode
 #include <fcntl.h> // For _O_TEXT
 #include <errno.h> // For EINVAL
@@ -89,7 +89,7 @@ extern "C" void __stdcall jitStartup(ICorJitHost* jitHost)
     }
 #endif // DEBUG
 
-#if !defined(_HOST_UNIX_)
+#if _HOST_WINDOWS_
     if (jitstdout == nullptr)
     {
         int stdoutFd = _fileno(procstdout());
@@ -113,7 +113,7 @@ extern "C" void __stdcall jitStartup(ICorJitHost* jitHost)
             }
         }
     }
-#endif // !_HOST_UNIX_
+#endif // _HOST_WINDOWS_
 
     // If jitstdout is still null, fallback to whatever procstdout() was
     // initially set to.

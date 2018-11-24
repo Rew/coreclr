@@ -18,7 +18,7 @@ list(APPEND CLR_SOURCES
 set (DEF_SOURCES
   mscorwks_ntdef.src
 )
-else()
+elseif(CLR_CMAKE_PLATFORM_UNIX)
 set (DEF_SOURCES
   mscorwks_unixexports.src
 )
